@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>China Way — Direct Sourcing from Yiwu</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #000000;
+    --white:   #ffffff;
+    --gray-1:  #f5f5f7;
+    --gray-2:  #e8e8ed;
+    --gray-3:  #6e6e73;
+    --gray-4:  #1d1d1f;
+    --blue:    #0071e3;
+    --blue-h:  #0077ed;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    background: var(--white);
+    color: var(--gray-4);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    height: 48px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 22px;
+  }
+  .nav-logo {
+    font-size: 1rem; font-weight: 600; letter-spacing: -0.02em;
+    color: var(--gray-4); text-decoration: none;
+  }
+  .nav-links {
+    display: flex; gap: 0; list-style: none;
+    position: absolute; left: 50%; transform: translateX(-50%);
+  }
+  .nav-links a {
+    font-size: 0.75rem; color: var(--gray-4); text-decoration: none;
+    padding: 0 12px; opacity: 0.85; transition: opacity 0.15s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    font-size: 0.75rem; color: var(--blue); text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .nav-cta:hover { opacity: 0.8; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100svh;
+    background: var(--black);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 900px; height: 900px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.95rem; font-weight: 400;
+    color: #f5f5f7; opacity: 0.7;
+    margin-bottom: 0.5rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero-h1 {
+    font-size: clamp(3.2rem, 8vw, 7rem);
+    font-weight: 700; line-height: 1.04;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+    animation: fadeDown 0.8s 0.1s ease both;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2.2vw, 1.5rem);
+    font-weight: 400; line-height: 1.5;
+    color: rgba(245,245,247,0.72);
+    max-width: 640px;
+    margin: 0 auto 2.2rem;
+    animation: fadeDown 0.8s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+  .btn-blue {
+    background: var(--blue); color: var(--white);
+    padding: 0.65rem 1.5rem; font-size: 0.95rem; font-weight: 400;
+    border-radius: 980px; border: none; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: background 0.2s;
+  }
+  .btn-blue:hover { background: var(--blue-h); }
+  .btn-outline {
+    background: transparent; color: #2997ff;
+    padding: 0.65rem 1.5rem; font-size: 0.95rem; font-weight: 400;
+    border-radius: 980px; border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer; text-decoration: none; display: inline-block;
+    transition: border-color 0.2s;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.45); }
+  .hero-scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 0.35;
+    animation: fadeDown 1s 0.8s ease both;
+  }
+  .scroll-arrow {
+    width: 1px; height: 36px; background: white;
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── STATS BAND ── */
+  .stats-band {
+    background: var(--gray-1);
+    padding: 60px 24px;
+    display: flex; justify-content: center;
+  }
+  .stats-inner {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 900px; width: 100%;
+  }
+  .stat-item {
+    text-align: center; padding: 24px 16px;
+    border-right: 1px solid var(--gray-2);
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item.visible { opacity: 1; transform: translateY(0); }
+  .stat-number {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700; letter-spacing: -0.03em;
+    color: var(--gray-4); line-height: 1; margin-bottom: 0.3rem;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--gray-3); line-height: 1.4; }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--black);
+    padding: 14px 0; overflow: hidden; white-space: nowrap;
+  }
+  .ticker-track { display: inline-block; animation: ticker 30s linear infinite; }
+  .ticker-item {
+    display: inline-block;
+    font-size: 0.8rem; letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.45); padding: 0 2.5rem;
+  }
+  .ticker-item::before { content: '·'; margin-right: 2.5rem; color: rgba(255,255,255,0.2); }
+
+  /* ── SECTION BASE ── */
+  .ap-section { padding: 120px 24px; text-align: center; }
+  .section-eyebrow {
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 0.5rem;
+  }
+  .section-h2 {
+    font-size: clamp(2rem, 4.5vw, 3.5rem);
+    font-weight: 700; line-height: 1.07; letter-spacing: -0.025em;
+    color: var(--gray-4); margin-bottom: 1rem;
+  }
+  .section-sub {
+    font-size: clamp(0.95rem, 1.8vw, 1.2rem);
+    font-weight: 400; line-height: 1.6; color: var(--gray-3);
+    max-width: 580px; margin: 0 auto 3.5rem;
+  }
+
+  /* ── HOW IT WORKS ── */
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2px; max-width: 1200px; margin: 0 auto;
+    background: var(--gray-2); border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--gray-2);
+  }
+  .step-card {
+    background: var(--white); padding: 3rem 2rem; text-align: left;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .step-card.visible { opacity: 1; transform: translateY(0); }
+  .step-num {
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--blue); margin-bottom: 1.2rem;
+  }
+  .step-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .step-title {
+    font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--gray-4); margin-bottom: 0.6rem; line-height: 1.3;
+  }
+  .step-desc { font-size: 0.88rem; color: var(--gray-3); line-height: 1.65; }
+
+  /* ── CATEGORIES ── */
+  .categories-section { background: var(--gray-1); }
+  .cat-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; max-width: 1200px; margin: 0 auto;
+    background: var(--gray-2); border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--gray-2);
+  }
+  .cat-card {
+    background: var(--white); padding: 2.5rem 2rem; text-align: left;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+  .cat-card.visible { opacity: 1; transform: translateY(0); }
+  .cat-icon { font-size: 2.2rem; margin-bottom: 1rem; display: block; }
+  .cat-title {
+    font-size: 1.05rem; font-weight: 600; letter-spacing: -0.01em;
+    color: var(--gray-4); margin-bottom: 0.5rem;
+  }
+  .cat-desc { font-size: 0.85rem; color: var(--gray-3); line-height: 1.65; }
+
+  /* ── WHY ── */
+  .why-section { background: var(--black); }
+  .why-section .section-h2 { color: var(--white); }
+  .why-section .section-sub { color: rgba(245,245,247,0.6); }
+  .why-section .section-eyebrow { color: #2997ff; }
+  .why-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 2px; max-width: 1200px; margin: 0 auto;
+    background: #1c1c1e; border-radius: 20px; overflow: hidden;
+    border: 1px solid #1c1c1e;
+  }
+  .why-card {
+    background: #111111; padding: 3rem 2.5rem;
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .why-card.visible { opacity: 1; transform: translateY(0); }
+  .why-card.wide { grid-column: span 2; }
+  .why-card-label {
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #2997ff; margin-bottom: 0.6rem;
+  }
+  .why-big-stat {
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 700; letter-spacing: -0.04em;
+    color: var(--white); line-height: 1; margin-bottom: 0.5rem;
+  }
+  .why-card-title {
+    font-size: clamp(1.2rem, 2.2vw, 1.8rem);
+    font-weight: 700; letter-spacing: -0.02em;
+    color: var(--white); line-height: 1.2; margin-bottom: 0.8rem;
+  }
+  .why-card-desc {
+    font-size: 0.92rem; color: rgba(245,245,247,0.5);
+    line-height: 1.7; max-width: 460px;
+  }
+  .why-card-icon { font-size: 2.5rem; margin-bottom: 1.5rem; display: block; }
+
+  /* ── TESTIMONIALS ── */
+  .testi-section { background: var(--gray-1); }
+  .testi-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; max-width: 1200px; margin: 0 auto;
+    background: var(--gray-2); border-radius: 20px; overflow: hidden;
+    border: 1px solid var(--gray-2);
+  }
+  .testi-card {
+    background: var(--white); padding: 2.5rem 2rem; text-align: left;
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .testi-card.visible { opacity: 1; transform: translateY(0); }
+  .testi-stars { color: #ff9f0a; font-size: 0.9rem; margin-bottom: 1rem; letter-spacing: 2px; }
+  .testi-text {
+    font-size: 0.95rem; line-height: 1.7; color: var(--gray-4);
+    margin-bottom: 1.5rem; font-style: italic;
+  }
+  .testi-name { font-size: 0.85rem; font-weight: 600; color: var(--gray-4); }
+  .testi-role { font-size: 0.8rem; color: var(--gray-3); margin-top: 0.15rem; }
+
+  /* ── CTA ── */
+  .cta-section { background: var(--white); padding: 120px 24px; text-align: center; }
+  .cta-box {
+    background: var(--gray-1); border-radius: 20px;
+    padding: 5rem 3rem; max-width: 860px; margin: 0 auto;
+  }
+  .cta-h2 {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700; letter-spacing: -0.025em;
+    color: var(--gray-4); margin-bottom: 0.8rem;
+  }
+  .cta-sub {
+    font-size: 1.1rem; color: var(--gray-3); line-height: 1.6;
+    max-width: 520px; margin: 0 auto 2.5rem;
+  }
+  .cta-form {
+    display: flex; flex-direction: column;
+    gap: 0.8rem; max-width: 400px; margin: 0 auto;
+  }
+  .cta-form input {
+    background: var(--white); border: 1px solid var(--gray-2);
+    color: var(--gray-4); padding: 0.8rem 1rem;
+    font-family: inherit; font-size: 0.95rem;
+    border-radius: 10px; outline: none; transition: border-color 0.2s;
+  }
+  .cta-form input:focus { border-color: var(--blue); }
+  .cta-form input::placeholder { color: var(--gray-3); }
+  .btn-blue-lg {
+    background: var(--blue); color: var(--white);
+    padding: 0.8rem 1.5rem; font-size: 0.95rem; font-weight: 400;
+    border-radius: 980px; border: none; cursor: pointer;
+    transition: background 0.2s; width: 100%;
+  }
+  .btn-blue-lg:hover { background: var(--blue-h); }
+
+  /* ── FOOTER ── */
+  footer { background: var(--gray-1); border-top: 1px solid var(--gray-2); padding: 0 24px; }
+  .footer-top {
+    max-width: 1200px; margin: 0 auto;
+    padding: 3rem 0 2rem;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2rem;
+    border-bottom: 1px solid var(--gray-2);
+  }
+  .footer-logo {
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--gray-4); text-decoration: none;
+    display: block; margin-bottom: 0.6rem;
+  }
+  .footer-brand-desc { font-size: 0.8rem; color: var(--gray-3); line-height: 1.6; }
+  .footer-col-title { font-size: 0.75rem; font-weight: 600; color: var(--gray-4); margin-bottom: 0.8rem; }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 0.45rem; }
+  .footer-links a { font-size: 0.78rem; color: var(--gray-3); text-decoration: none; transition: color 0.15s; }
+  .footer-links a:hover { color: var(--gray-4); }
+  .footer-bottom {
+    max-width: 1200px; margin: 0 auto;
+    padding: 1rem 0;
+    display: flex; justify-content: space-between;
+    font-size: 0.75rem; color: var(--gray-3);
+  }
+  .footer-bottom a { color: var(--gray-3); text-decoration: none; }
+  .footer-bottom a:hover { color: var(--gray-4); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.35; }
+    50% { opacity: 0.9; }
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
+    .stat-item:nth-child(2) { border-right: none; }
+    .steps-grid, .why-grid { grid-template-columns: 1fr 1fr; }
+    .why-card.wide { grid-column: span 2; }
+    .cat-grid, .testi-grid { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 600px) {
+    .steps-grid, .cat-grid, .testi-grid, .why-grid { grid-template-columns: 1fr; }
+    .why-card.wide { grid-column: span 1; }
+    .stats-inner { grid-template-columns: 1fr 1fr; }
+    .stat-item { border-right: none; border-bottom: 1px solid var(--gray-2); }
+    .stat-item:last-child { border-bottom: none; }
+    .footer-top { grid-template-columns: 1fr; }
+    .ap-section { padding: 80px 20px; }
+    .cta-box { padding: 3rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="https://chinaway.ca">China Way</a>
+  <ul class="nav-links">
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#categories">Products</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-cta" href="#contact">Get a Quote ›</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">Based in Yiwu, China — Serving Canadian Retailers</p>
+  <h1 class="hero-h1">Source smarter.<br />Margin harder.</h1>
+  <p class="hero-sub">China Way connects North American retailers and wholesalers directly to Yiwu's 75,000+ verified suppliers — cutting costs, not corners.</p>
+  <div class="hero-actions">
+    <a href="#contact" class="btn-blue">Start Sourcing</a>
+    <a href="#how" class="btn-outline">Learn more ›</a>
+  </div>
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <div class="scroll-arrow"></div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-band">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-number">75K+</div>
+      <div class="stat-label">Vendors in one market</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">1.8M+</div>
+      <div class="stat-label">Product varieties</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">40%</div>
+      <div class="stat-label">Avg. margin advantage</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number">200+</div>
+      <div class="stat-label">Countries Yiwu exports to</div>
+    </div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Wall Art & Canvas</span>
+    <span class="ticker-item">Home Décor</span>
+    <span class="ticker-item">Giftware</span>
+    <span class="ticker-item">Seasonal Products</span>
+    <span class="ticker-item">Textiles</span>
+    <span class="ticker-item">Electronics Accessories</span>
+    <span class="ticker-item">Promotional Items</span>
+    <span class="ticker-item">Custom Packaging</span>
+    <span class="ticker-item">Private Label</span>
+    <span class="ticker-item">Wall Art & Canvas</span>
+    <span class="ticker-item">Home Décor</span>
+    <span class="ticker-item">Giftware</span>
+    <span class="ticker-item">Seasonal Products</span>
+    <span class="ticker-item">Textiles</span>
+    <span class="ticker-item">Electronics Accessories</span>
+    <span class="ticker-item">Promotional Items</span>
+    <span class="ticker-item">Custom Packaging</span>
+    <span class="ticker-item">Private Label</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<section class="ap-section" id="how">
+  <p class="section-eyebrow">The Process</p>
+  <h2 class="section-h2">Four steps to your door.</h2>
+  <p class="section-sub">We handle every detail on the ground in China so you can focus on selling.</p>
+  <div class="steps-grid">
+    <div class="step-card">
+      <p class="step-num">Step 01</p>
+      <span class="step-icon">📋</span>
+      <p class="step-title">Tell Us What You Need</p>
+      <p class="step-desc">Share product requirements, target price, and order volumes. We scope the brief and confirm what's achievable in Yiwu.</p>
+    </div>
+    <div class="step-card">
+      <p class="step-num">Step 02</p>
+      <span class="step-icon">🤝</span>
+      <p class="step-title">Supplier Matching</p>
+      <p class="step-desc">We walk the market, vet suppliers face-to-face, and shortlist the best options — negotiating prices and MOQs on your behalf.</p>
+    </div>
+    <div class="step-card">
+      <p class="step-num">Step 03</p>
+      <span class="step-icon">🔍</span>
+      <p class="step-title">Samples & QC</p>
+      <p class="step-desc">Samples reviewed before production begins. On-site quality checks at the factory before any goods leave China.</p>
+    </div>
+    <div class="step-card">
+      <p class="step-num">Step 04</p>
+      <span class="step-icon">🚢</span>
+      <p class="step-title">Shipping & Delivery</p>
+      <p class="step-desc">Goods consolidated, freight coordinated, customs docs handled. Your order arrives in Canada on time.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="ap-section categories-section" id="categories">
+  <p class="section-eyebrow">What We Source</p>
+  <h2 class="section-h2">High-margin categories.<br />Verified suppliers.</h2>
+  <p class="section-sub">Specialists in the consumer goods categories that drive retail margins.</p>
+  <div class="cat-grid">
+    <div class="cat-card">
+      <span class="cat-icon">🖼️</span>
+      <p class="cat-title">Wall Art & Canvas</p>
+      <p class="cat-desc">Pop art, abstract prints, framed sets, canvas rolls, and custom print-on-demand options for retail and e-commerce.</p>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">🏡</span>
+      <p class="cat-title">Home Décor</p>
+      <p class="cat-desc">Sculptures, vases, mirrors, clocks, and accent pieces — sourced from verified Yiwu manufacturers.</p>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">🎁</span>
+      <p class="cat-title">Giftware & Novelties</p>
+      <p class="cat-desc">Seasonal gift sets, keepsakes, branded merchandise, and impulse buys for retail displays and storefronts.</p>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">🧵</span>
+      <p class="cat-title">Textiles & Soft Goods</p>
+      <p class="cat-desc">Throws, cushion covers, table linens, tote bags, and custom woven or printed fabric products.</p>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">📦</span>
+      <p class="cat-title">Packaging & Stationery</p>
+      <p class="cat-desc">Custom packaging, gift boxes, greeting cards, notebooks, and branded paper goods for retailers.</p>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">🏷️</span>
+      <p class="cat-title">Custom & Private Label</p>
+      <p class="cat-desc">Have a product in mind? We find the factory, manage production, and get it to your warehouse.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CHINA WAY -->
+<section class="ap-section why-section" id="why">
+  <p class="section-eyebrow">Why China Way</p>
+  <h2 class="section-h2">A sourcing partner<br />who's actually there.</h2>
+  <p class="section-sub">Most agents work remotely. We work from inside the world's largest wholesale market.</p>
+  <div class="why-grid">
+    <div class="why-card wide">
+      <span class="why-card-icon">📍</span>
+      <p class="why-big-stat">Yiwu.</p>
+      <p class="why-card-title">The world's largest small-commodity market — and we're inside it.</p>
+      <p class="why-card-desc">Yiwu International Trade City spans 5 districts, 75,000+ booths, and exports to 200+ countries. Having a trusted on-the-ground agent is your single biggest competitive advantage as a North American buyer.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-card-icon">🤝</span>
+      <p class="why-card-label">Verified relationships</p>
+      <p class="why-card-title">People we know personally — not online listings.</p>
+      <p class="why-card-desc">We work with audited, established suppliers. Your goods come from factories we've visited, not anonymous profiles.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-card-icon">🇨🇦</span>
+      <p class="why-card-label">Canadian-owned</p>
+      <p class="why-card-title">We understand your market and your regulations.</p>
+      <p class="why-card-desc">Canadian-owned and operated. We understand the retail landscape, import rules, and the real challenges of cross-border trade.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-card-icon">💳</span>
+      <p class="why-card-label">Transparent pricing</p>
+      <p class="why-card-title">You see the factory price. We charge a flat fee.</p>
+      <p class="why-card-desc">No hidden commissions on supplier invoices. Clear, flat-fee pricing so you always know your true landed cost before committing.</p>
+    </div>
+    <div class="why-card">
+      <span class="why-card-icon">✅</span>
+      <p class="why-card-label">Quality control</p>
+      <p class="why-card-title">Inspected before it ships. Every order.</p>
+      <p class="why-card-desc">In-person factory inspections before goods leave China. Consistent quality across every order, not just your first.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="ap-section testi-section">
+  <p class="section-eyebrow">From Our Clients</p>
+  <h2 class="section-h2">Built on results<br />and repeat orders.</h2>
+  <p class="section-sub">Retailers and wholesalers across Canada trust China Way to deliver.</p>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"China Way saved us weeks of back-and-forth. They found a wall art supplier that matched our exact style at 35% below what we were paying before."</p>
+      <p class="testi-name">Sarah M.</p>
+      <p class="testi-role">Owner, boutique home décor retailer — Ontario</p>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"As a first-time importer, I had no idea where to start. They walked me through everything — supplier selection, samples, freight, customs. Couldn't have done it without them."</p>
+      <p class="testi-name">James K.</p>
+      <p class="testi-role">Founder, e-commerce gift brand — British Columbia</p>
+    </div>
+    <div class="testi-card">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-text">"We've placed three orders now. Quality control has been consistent every time — something I couldn't guarantee when sourcing through Alibaba on my own."</p>
+      <p class="testi-name">Priya N.</p>
+      <p class="testi-role">Wholesale buyer, multi-location retail chain — Alberta</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-box">
+    <p class="section-eyebrow">Get Started</p>
+    <h2 class="cta-h2">Ready to source smarter?</h2>
+    <p class="cta-sub">Tell us what you're looking for. We'll come back with supplier options, realistic pricing, and a clear plan — no obligation.</p>
+    <div class="cta-form">
+      <input type="text" placeholder="Your name" />
+      <input type="email" placeholder="Business email" />
+      <input type="text" placeholder="What are you looking to source?" />
+      <button class="btn-blue-lg">Send Enquiry</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <a class="footer-logo" href="https://chinaway.ca">China Way</a>
+      <p class="footer-brand-desc">Direct sourcing from Yiwu, China for North American retailers and wholesalers. Canadian-owned. Yiwu-based.</p>
+    </div>
+    <div>
+      <p class="footer-col-title">Services</p>
+      <ul class="footer-links">
+        <li><a href="#">Supplier Matching</a></li>
+        <li><a href="#">Quality Control</a></li>
+        <li><a href="#">Freight & Customs</a></li>
+        <li><a href="#">Private Label</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Products</p>
+      <ul class="footer-links">
+        <li><a href="#">Wall Art & Canvas</a></li>
+        <li><a href="#">Home Décor</a></li>
+        <li><a href="#">Giftware</a></li>
+        <li><a href="#">Textiles</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="footer-col-title">Company</p>
+      <ul class="footer-links">
+        <li><a href="#">About Us</a></li>
+        <li><a href="#">How It Works</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="https://chinaway.ca">chinaway.ca</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>Copyright © 2026 China Way. All rights reserved.</span>
+    <a href="https://chinaway.ca">chinaway.ca</a>
+  </div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        setTimeout(() => el.classList.add('visible'), parseInt(el.dataset.delay || '0'));
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  [
+    ['.stat-item', 100],
+    ['.step-card', 100],
+    ['.cat-card', 80],
+    ['.why-card', 100],
+    ['.testi-card', 100],
+  ].forEach(([sel, step]) => {
+    document.querySelectorAll(sel).forEach((el, i) => {
+      el.dataset.delay = i * step;
+      observer.observe(el);
+    });
+  });
+</script>
+</body>
+</html>
