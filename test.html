@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>China Way — Direct Sourcing from Guangzhou</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #000000;
+    --white:   #ffffff;
+    --gray-1:  #f5f5f7;
+    --gray-2:  #e8e8ed;
+    --gray-3:  #6e6e73;
+    --gray-4:  #1d1d1f;
+    --blue:    #0071e3;
+    --blue-h:  #0077ed;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    background: var(--white);
+    color: var(--gray-4);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
+    height: 48px;
+    background: rgba(255,255,255,0.85);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 22px;
+  }
+  .nav-logo {
+    font-size: 1rem; font-weight: 600; letter-spacing: -0.02em;
+    color: var(--gray-4); text-decoration: none;
+  }
+  .nav-links {
+    display: flex; gap: 0; list-style: none;
+    position: absolute; left: 50%; transform: translateX(-50%);
+  }
+  .nav-links a {
+    font-size: 0.75rem; color: var(--gray-4); text-decoration: none;
+    padding: 0 12px; opacity: 0.85; transition: opacity 0.15s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-cta {
+    font-size: 0.75rem; color: var(--blue); text-decoration: none;
+    transition: opacity 0.15s;
+  }
+  .nav-cta:hover { opacity: 0.8; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100svh;
+    background: var(--black);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 900px; height: 900px;
+    border-radius: 50%;
+    background: radial-gradient(ellipse, rgba(255,255,255,0.04) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 0.95rem; font-weight: 400;
+    color: #f5f5f7; opacity: 0.7;
+    margin-bottom: 0.5rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero-h1 {
+    font-size: clamp(3.2rem, 8vw, 7rem);
+    font-weight: 700; line-height: 1.04;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 1.2rem;
+    animation: fadeDown 0.8s 0.1s ease both;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2.2vw, 1.5rem);
+    font-weight: 400; line-height: 1.5;
+    color: rgba(245,245,247,0.72);
+    max-width: 640px;
+    margin: 0 auto 2.2rem;
+    animation: fadeDown 0.8s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+  .btn-blue {
+    background: var(--blue); color: var(--white);
+    padding: 0.65rem 1.5rem; font-size: 0.95rem; font-weight: 400;
+    border-radius: 980px; border: none; cursor: pointer;
+    text-decoration: none; display: inline-block;
+    transition: background 0.2s;
+  }
+  .btn-blue:hover { background: var(--blue-h); }
+  .btn-outline {
+    background: transparent; color: #2997ff;
+    padding: 0.65rem 1.5rem; font-size: 0.95rem; font-weight: 400;
+    border-radius: 980px; border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer; text-decoration: none; display: inline-block;
+    transition: border-color 0.2s;
+  }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.45); }
+  .hero-scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    opacity: 0.35;
+    animation: fadeDown 1s 0.8s ease both;
+  }
+  .scroll-arrow {
+    width: 1px; height: 36px; background: white;
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ── STATS BAND ── */
+  .stats-band {
+    background: var(--gray-1);
+    padding: 60px 24px;
+    display: flex; justify-content: center;
+  }
+  .stats-inner {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    max-width: 900px; width: 100%;
+  }
+  .stat-item {
+    text-align: center; padding: 24px 16px;
+    border-right: 1px solid var(--gray-2);
+    opacity: 0; transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item.visible { opacity: 1; transform: translateY(0); }
+  .stat-number {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700; letter-spacing: -0.03em;
+    color: var(--gray-4); line-height: 1; margin-bottom: 0.3rem;
+  }
+  .stat-label { font-size: 0.82rem; color: var(--gray-3); line-height: 1.4; }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--black);
+    padding: 14px 0; overflow: hidden; white-space: nowrap;
+  }
+  .ticker-track { display: inline-block; animation: ticker 30s linear infinite; }
+  .ticker-item {
